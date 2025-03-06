@@ -1,0 +1,72 @@
+import datetime
+class ExpenseTracker:
+    def __init__(self):
+        self.expenses = {}
+
+    def add_expense(self):
+        date = input("Enter date (YYYY-MM-DD): ")
+        category = input("Enter category: ")
+        amount = float(input("Enter amount: "))
+        description = input("Enter description: ")
+
+        if date not in self.expenses:
+            self.expenses[date] = []
+
+        self.expenses[date].append({
+            "category": category,
+            "amount": amount,
+            "description": description
+        })
+        print("Expense added successfully!")
+
+    def view_expenses(self):
+        for date, expenses in self.expenses.items():
+            print(f"Expenses for {date}:")
+            for expense in expenses:
+                print(f"  - {expense['category']}: ${expense['amount']} ({expense['description']})")
+
+    def total_expenses(self):
+        total = sum(sum(expense["amount"] for expense in expenses) for expenses in self.expenses.values())
+        print(f"Total expenses: ${total:.2f}")
+
+    def category_wise_expenses(self):
+        categories = {}
+        for expenses in self.expenses.values():
+            for expense in expenses:
+                category = expense["category"]
+                amount = expense["amount"]
+                categories[category] = categories.get(category, 0) + amount
+
+        print("Category-wise expenses:")
+        for category, amount in categories.items():
+            print(f"  - {category}: ${amount:.2f}")
+
+def main():
+    tracker = ExpenseTracker()
+
+    while True:
+        print("\nOptions:")
+        print("1. Add expense")
+        print("2. View expenses")
+        print("3. Total expenses")
+        print("4. Category-wise expenses")
+        print("5. Exit")
+
+        choice = input("Choose an option: ")
+
+        if choice == "1":
+            tracker.add_expense()
+        elif choice == "2":
+            tracker.view_expenses()
+        elif choice == "3":
+            tracker.total_expenses()
+        elif choice == "4":
+            tracker.category_wise_expenses()
+        elif choice == "5":
+            break
+        else:
+            print("Invalid option. Please try again.")
+
+if __name__ == "__main__":
+    main()
+
